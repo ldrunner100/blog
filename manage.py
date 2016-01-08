@@ -12,10 +12,6 @@ def run():
     port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
 
-if __name__ == "__main__":
-    manager.run()
-
-
 from blog.database import session, Entry
 
 @manager.command
@@ -29,6 +25,9 @@ def seed():
         )
         session.add(entry)
     session.commit()
+    
+if __name__ == "__main__":
+    manager.run()
     
     
     

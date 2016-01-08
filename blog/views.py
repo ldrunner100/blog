@@ -1,5 +1,6 @@
 
 from flask import render_template
+from flask import request, redirect, url_for
 
 from blog import app
 from .database import session, Entry
@@ -37,8 +38,6 @@ def entries(page=1):
 def add_entry_get():
     return render_template("add_entry.html")
     
-from flask import request, redirect, url_for
-
 @app.route("/entry/add", methods=["POST"])
 def add_entry_post():
     entry = Entry(
@@ -49,3 +48,27 @@ def add_entry_post():
     session.commit()
     return redirect(url_for("entries"))
     
+@app.route("/entry/<entryid>")
+def view_entry_get(entryid = Entry.id):
+    entry = session.query(Entry).filter(Entry.id == entryid).first()
+    return render_template(
+        "single_entry.html",
+        entry=entry,
+        entryid=entryid,
+        )
+    
+@app.route("/entry/<entryid>/edit", methods=["GET"])
+def edit_entry_get(entryid=Entry.id):
+    return render_template("edit_entry.html")
+
+@app.route("/entry/<entryid>/edit", methods=["POST"])
+def edit_entry_post(entryid):
+    
+    title=request.form["title"]
+    content=request.form["content"]
+    
+    session.query(Entry).filter_by(id=entryid).update(
+        {"title": title, "content":content}
+    )
+    session.commit()
+    return redirect(url_for("entries"))
