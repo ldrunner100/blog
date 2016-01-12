@@ -38,17 +38,7 @@ def entries(page=1):
 @app.route("/entry/add", methods=["GET"])
 def add_entry_get():
     return render_template("add_entry.html")
-    
-@app.route("/entry/add", methods=["POST"])
-def add_entry_post():
-    entry = Entry(
-        title=request.form["title"],
-        content=request.form["content"],
-    )
-    session.add(entry)
-    session.commit()
-    return redirect(url_for("entries"))
-    
+
 @app.route("/entry/<entryid>")
 def view_entry_get(entryid = Entry.id):
     entry = session.query(Entry).filter(Entry.id == entryid).first()
@@ -102,7 +92,19 @@ def login_post():
     login_user(user)
     return redirect(request.args.get('next') or url_for("entries"))
     
+from flask.ext.login import current_user
 
+@app.route("/entry/add", methods=["POST"])
+@login_required
+def add_entry_post():
+    entry = Entry(
+        title=request.form["title"],
+        content=request.form["content"],
+    )
+    session.add(entry)
+    session.commit()
+    return redirect(url_for("entries"))
+    
 
     
     

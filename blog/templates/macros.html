@@ -9,6 +9,7 @@
     </div>
     <div class="col-md-10">
         <h1>
+            {{ entry.author.name }}
             {{ entry.title }}
         </h1>
         {{ entry.content | markdown }}
