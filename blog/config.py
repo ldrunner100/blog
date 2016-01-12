@@ -8,4 +8,5 @@ class DevelopmentConfig(object):
     DEBUG = True
     SECRET_KEY = os.environ.get("BLOGFUL_SECRET_KEY", "")
     
-export BLOGFUL_SECRET_KEY="your_secret_key_here"
+
+

@@ -25,8 +25,6 @@ class Entry(Base):
     content = Column(Text)
     datetime = Column(DateTime, default=datetime.datetime.now)
 
-Base.metadata.create_all(engine)
-
 from flask.ext.login import UserMixin
 
 class User(Base, UserMixin):
@@ -37,6 +35,6 @@ class User(Base, UserMixin):
     email = Column(String(128), unique=True)
     password = Column(String(128))
     
-
+Base.metadata.create_all(engine)
 
 
